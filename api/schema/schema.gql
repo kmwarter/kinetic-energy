@@ -1,0 +1,35 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Session {
+  id: String!
+  productIds: [String!]
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  sessions: [Session!]!
+  session(id: String!): Session
+}
+
+type Mutation {
+  createSession(createSessionInput: CreateSessionInput): Session!
+  updateSession(updateSessionInput: UpdateSessionInput!): Session!
+  removeSession(id: String!): Session!
+}
+
+input CreateSessionInput {
+  id: String
+}
+
+input UpdateSessionInput {
+  id: String!
+  productIds: [String!]!
+}
