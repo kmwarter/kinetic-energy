@@ -5,6 +5,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SessionsModule } from './sessions/sessions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AssetsModule } from './assets/assets.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -22,7 +24,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoLoadEntities: true,
       synchronize: true, // Not to be used in prod
     }),
+    ConfigModule.forRoot({
+      isGlobal: true, // Make ConfigModule available globally
+    }),
     SessionsModule,
+    AssetsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

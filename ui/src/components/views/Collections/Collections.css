@@ -1,0 +1,14 @@
+.loading-container {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collections-container {
+  margin: 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  column-gap: 24px;
+  row-gap: 24px;
+}

@@ -16,7 +16,7 @@ export class Session {
 
   @Field(() => [String], { nullable: true })
   @Column('simple-array', { nullable: true })
-  productIds: string[];
+  assetIds: string[] | null;
 
   @Field()
   @Column()

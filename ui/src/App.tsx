@@ -2,12 +2,17 @@ import './App.css';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { gql, request } from 'graphql-request';
-import { ChangeEvent, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import Navbar from './components/shared/Navbar/Navbar';
+import Collection from './components/views/Collection/Collection';
+import Collections from './components/views/Collections/Collections';
+import Cart from './components/views/Collections/Collections';
 
 interface SessionData {
   session: {
     id: string;
-    productIds: string[];
+    assetIds: string[];
     created_at: string;
     updated_at: string;
   };
@@ -71,9 +76,7 @@ const removeSessionMutation = gql`
 
 function App() {
   const queryClient = useQueryClient();
-  const [sessionInput, setSessionInput] = useState('');
-  const [newSessionId, setNewSessionId] = useState<string | null>(null);
-  const { isPending, isError, data, error } = useQuery<{
+  const { data } = useQuery<{
     session: SessionData['session'] | null;
   }>({
     queryKey: ['session'],
@@ -93,14 +96,6 @@ function App() {
       return { session };
     },
   });
-
-  const onSessionInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSessionInput(event.target.value);
-  };
-
-  const changeSessionToken = () => {
-    sessionStorage.setItem('kineticSessionId', sessionInput);
-  };
 
   const createSessionMutationFn = useMutation<CreateResponse, Error>({
     mutationFn: async () => {
@@ -156,7 +151,7 @@ function App() {
     try {
       const data = await createSessionMutationFn.mutateAsync();
 
-      setNewSessionId(data.createSession.id);
+      return data.createSession.id;
     } catch (error) {
       console.error('Error creating session:', error);
     }
@@ -185,39 +180,16 @@ function App() {
     }
   };
 
-  if (isPending) {
-    return <span>Loading...</span>;
-  }
-
-  if (isError) {
-    return <span>Error: {error.message}</span>;
-  }
-
   return (
-    <div className="App">
-      Current Session Id
-      <div>{data?.session?.id}</div>
-      Session Products
-      <div>
-        {data?.session?.productIds.map((productId) => {
-          return <div key={productId}>{productId}</div>;
-        })}
-      </div>
-      <div>
-        Created Session
-        <div>{newSessionId}</div>
-        <button onClick={createSession}>Create Session Token</button>
-      </div>
-      <div>
-        <button onClick={updateSession}>Update Session Token</button>
-      </div>
-      <div>
-        <button onClick={removeSession}>Remove Session Token</button>
-      </div>
-      <div>
-        <input onChange={onSessionInputChange} value={sessionInput} />
-        <button onClick={changeSessionToken}>Change Session Token</button>
-      </div>
+    <div className="app">
+      <Navbar />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" Component={Collections} />
+          <Route path="/collection/:id" Component={Collection} />
+          <Route path="/cart" Component={Cart} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
