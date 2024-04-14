@@ -1,7 +1,10 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 
 @ObjectType()
-export class Asset {
+export class Nft {
+  @Field()
+  identifier: string;
+
   @Field()
   collection: string;
 
@@ -12,5 +15,5 @@ export class Asset {
   description: string;
 
   @Field({ nullable: true })
-  banner_image_url: string;
+  image_url: string;
 }

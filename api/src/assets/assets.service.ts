@@ -23,11 +23,17 @@ export class AssetsService {
   }
 
   async collections() {
-    console.log((
-      await axios.get(this.openSeaUrlV2('/collections'), this.axiosConfig)
-    ).data.collections)
     return (
       await axios.get(this.openSeaUrlV2('/collections'), this.axiosConfig)
     ).data.collections;
+  }
+
+  async collection(collectionSlug: string) {
+    return (
+      await axios.get(
+        this.openSeaUrlV2(`/collection/${collectionSlug}/nfts`),
+        this.axiosConfig,
+      )
+    ).data.nfts;
   }
 }

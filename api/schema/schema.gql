@@ -16,18 +16,24 @@ scalar DateTime
 
 type Asset {
   collection: String!
-  name: String!
-  description: String!
-  image_url: String!
-  banner_image_url: String!
-  owner: String!
-  opensea_url: String
+  name: String
+  description: String
+  banner_image_url: String
+}
+
+type Nft {
+  identifier: String!
+  collection: String!
+  name: String
+  description: String
+  image_url: String
 }
 
 type Query {
   sessions: [Session!]!
   session(id: String!): Session
   assets: [Asset!]!
+  nfts(collection_slug: String!): [Nft!]!
 }
 
 type Mutation {
@@ -42,5 +48,5 @@ input CreateSessionInput {
 
 input UpdateSessionInput {
   id: String!
-  productIds: [String!]!
+  assetIds: [String!]!
 }

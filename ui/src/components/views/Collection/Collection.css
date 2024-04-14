@@ -1,0 +1,12 @@
+.loading-container {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.collection-container {
+  margin: 24px;
+  display: flex;
+  flex-wrap: wrap;
+}

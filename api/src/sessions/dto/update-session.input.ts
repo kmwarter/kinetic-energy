@@ -7,5 +7,5 @@ export class UpdateSessionInput extends PartialType(CreateSessionInput) {
   id: string;
 
   @Field(() => [String])
-  productIds: string[];
+  assetIds: string[];
 }

@@ -5,9 +5,9 @@ import { gql, request } from 'graphql-request';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/shared/Navbar/Navbar';
+import Cart from './components/views/Cart/Cart';
 import Collection from './components/views/Collection/Collection';
 import Collections from './components/views/Collections/Collections';
-import Cart from './components/views/Collections/Collections';
 
 interface SessionData {
   session: {
@@ -34,7 +34,7 @@ const sessionQuery = gql`
   query GetSession($id: String!) {
     session(id: $id) {
       id
-      productIds
+      assetIds
       created_at
       updated_at
     }
@@ -45,7 +45,7 @@ const createSessionMutation = gql`
   mutation {
     createSession {
       id
-      productIds
+      assetIds
       created_at
       updated_at
     }
@@ -53,10 +53,10 @@ const createSessionMutation = gql`
 `;
 
 const updateSessionMutation = gql`
-  mutation UpdateSession($id: String!, $productIds: [String!]!) {
-    updateSession(updateSessionInput: { id: $id, productIds: $productIds }) {
+  mutation UpdateSession($id: String!, $assetIds: [String!]!) {
+    updateSession(updateSessionInput: { id: $id, assetIds: $assetIds }) {
       id
-      productIds
+      assetIds
       created_at
       updated_at
     }
@@ -67,7 +67,7 @@ const removeSessionMutation = gql`
   mutation RemoveSession($id: String!) {
     removeSession(id: $id) {
       id
-      productIds
+      assetIds
       created_at
       updated_at
     }
@@ -111,15 +111,15 @@ function App() {
   const updateSessionMutationFn = useMutation<
     UpdateResponse,
     Error,
-    { id: string; productIds: string[] }
+    { id: string; assetIds: string[] }
   >({
-    mutationFn: async ({ id, productIds }) => {
+    mutationFn: async ({ id, assetIds }) => {
       const data: UpdateResponse = await request(
         'http://localhost:4000/graphql',
         updateSessionMutation,
         {
           id,
-          productIds,
+          assetIds,
         },
       );
 
@@ -163,7 +163,7 @@ function App() {
       if (!id) return;
       await updateSessionMutationFn.mutateAsync({
         id,
-        productIds: ['987', '876'],
+        assetIds: ['987', '876'],
       });
     } catch (error) {
       console.error('Error updating session:', error);
@@ -182,11 +182,11 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar />
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" Component={Collections} />
-          <Route path="/collection/:id" Component={Collection} />
+          <Route path="/collection/:slug" Component={Collection} />
           <Route path="/cart" Component={Cart} />
         </Routes>
       </BrowserRouter>
