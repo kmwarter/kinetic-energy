@@ -4,7 +4,8 @@ import { useQuery } from '@tanstack/react-query';
 import { gql, request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 
-import Card from './Card/Card';
+import { Session } from '../../../types';
+import NftCard from '../../shared/NftCard/NftCard';
 
 interface NftsData {
   nfts: {
@@ -28,7 +29,13 @@ const nftsQuery = gql`
   }
 `;
 
-function Collection() {
+interface CellectionProps {
+  session?: Session | null;
+  createSession: () => Promise<Session>;
+  updateSession: (id: string, assetIds: string[]) => void;
+}
+
+function Collection({ session, createSession, updateSession }: CellectionProps) {
   const { slug } = useParams();
   const { isPending, isError, data, error } = useQuery<{
     nfts: NftsData['nfts'] | null;
@@ -45,6 +52,16 @@ function Collection() {
     },
   });
 
+  const onNftClick = async (identifier: string) => {
+    let sessionId = session?.id;
+    if (!sessionId) {
+      const newSession = await createSession();
+      sessionId = newSession.id;
+    }
+
+    // TODO: Implement add to cart through update session
+  };
+
   if (isPending) {
     return <div className="loading-container">Loading...</div>;
   }
@@ -56,7 +73,7 @@ function Collection() {
   return (
     <div className="collections-container">
       {data?.nfts?.map((nft) => {
-        return <Card key={nft.collection} {...nft} />;
+        return <NftCard key={nft.collection} {...nft} onClick={onNftClick} />;
       })}
     </div>
   );

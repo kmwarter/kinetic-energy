@@ -3,7 +3,7 @@ import './Collections.css';
 import { useQuery } from '@tanstack/react-query';
 import { gql, request } from 'graphql-request';
 
-import Card from './Card/Card';
+import CollectionCard from './CollectionCard/CollectionCard';
 
 interface AssetsData {
   assets: {
@@ -51,7 +51,7 @@ function Collections() {
   return (
     <div className="collections-container">
       {data?.assets?.map((asset) => {
-        return <Card key={asset.collection} {...asset} />;
+        return <CollectionCard key={asset.collection} {...asset} />;
       })}
     </div>
   );

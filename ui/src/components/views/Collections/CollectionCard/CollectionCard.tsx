@@ -1,22 +1,24 @@
-import './Card.css';
+import './CollectionCard.css';
+
+import { useNavigate } from 'react-router-dom';
 
 interface CardProps {
-  identifier: string;
   collection: string;
   name: string;
   description: string;
-  image_url: string;
+  banner_image_url: string;
 }
 
-function Card({ identifier, collection, name, description, image_url }: CardProps) {
+function Card({ collection, name, description, banner_image_url }: CardProps) {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    console.log(identifier);
-    // TODO: Add to cart
+    navigate(`/collection/${collection}`);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
-      // TODO: Add to cart
+      navigate(`/collection/${collection}`);
     }
   };
 
@@ -28,9 +30,8 @@ function Card({ identifier, collection, name, description, image_url }: CardProp
       role="button"
       tabIndex={0}
     >
-      <img alt="collection-pic" src={image_url || '/money.png'} />
+      <img alt="collection-pic" src={banner_image_url || '/money.png'} />
       <div className="asset-card-name">{name}</div>
-      <div className="asset-card-collection">{collection}</div>
       <div className="asset-card-description">{description}</div>
     </div>
   );

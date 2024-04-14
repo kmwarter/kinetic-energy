@@ -1,78 +1,20 @@
 import './App.css';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { gql, request } from 'graphql-request';
+import { request } from 'graphql-request';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import Navbar from './components/shared/Navbar/Navbar';
 import Cart from './components/views/Cart/Cart';
 import Collection from './components/views/Collection/Collection';
 import Collections from './components/views/Collections/Collections';
-
-interface SessionData {
-  session: {
-    id: string;
-    assetIds: string[];
-    created_at: string;
-    updated_at: string;
-  };
-}
-
-interface CreateResponse {
-  createSession: SessionData['session'];
-}
-
-interface UpdateResponse {
-  updateSession: SessionData['session'];
-}
-
-interface RemoveResponse {
-  removeSession: SessionData['session'];
-}
-
-const sessionQuery = gql`
-  query GetSession($id: String!) {
-    session(id: $id) {
-      id
-      assetIds
-      created_at
-      updated_at
-    }
-  }
-`;
-
-const createSessionMutation = gql`
-  mutation {
-    createSession {
-      id
-      assetIds
-      created_at
-      updated_at
-    }
-  }
-`;
-
-const updateSessionMutation = gql`
-  mutation UpdateSession($id: String!, $assetIds: [String!]!) {
-    updateSession(updateSessionInput: { id: $id, assetIds: $assetIds }) {
-      id
-      assetIds
-      created_at
-      updated_at
-    }
-  }
-`;
-
-const removeSessionMutation = gql`
-  mutation RemoveSession($id: String!) {
-    removeSession(id: $id) {
-      id
-      assetIds
-      created_at
-      updated_at
-    }
-  }
-`;
+import {
+  createSessionMutation,
+  removeSessionMutation,
+  sessionQuery,
+  updateSessionMutation,
+} from './gql';
+import { CreateResponse, RemoveResponse, SessionData, UpdateResponse } from './types';
 
 function App() {
   const queryClient = useQueryClient();
@@ -148,22 +90,19 @@ function App() {
   });
 
   const createSession = async () => {
-    try {
-      const data = await createSessionMutationFn.mutateAsync();
+    const data = await createSessionMutationFn.mutateAsync();
 
-      return data.createSession.id;
-    } catch (error) {
-      console.error('Error creating session:', error);
-    }
+    return data.createSession;
   };
 
-  const updateSession = async () => {
+  const updateSession = async (id: string, assetIds: string[]) => {
     try {
       const id = data?.session?.id;
       if (!id) return;
+
       await updateSessionMutationFn.mutateAsync({
         id,
-        assetIds: ['987', '876'],
+        assetIds,
       });
     } catch (error) {
       console.error('Error updating session:', error);
@@ -174,6 +113,7 @@ function App() {
     try {
       const id = data?.session?.id;
       if (!id) return;
+
       await removeSessionMutationFn.mutateAsync(id);
     } catch (error) {
       console.error('Error removing session:', error);
@@ -183,11 +123,29 @@ function App() {
   return (
     <div className="app">
       <BrowserRouter>
-        <Navbar />
+        <Navbar session={data?.session} />
         <Routes>
-          <Route path="/" Component={Collections} />
-          <Route path="/collection/:slug" Component={Collection} />
-          <Route path="/cart" Component={Cart} />
+          <Route path="/" element={<Collections />} />
+          <Route
+            path="/collection/:slug"
+            element={
+              <Collection
+                session={data?.session}
+                createSession={createSession}
+                updateSession={updateSession}
+              />
+            }
+          />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                session={data?.session}
+                updateSession={updateSession}
+                removeSession={removeSession}
+              />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>

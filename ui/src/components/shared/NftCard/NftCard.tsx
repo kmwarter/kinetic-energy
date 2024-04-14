@@ -1,24 +1,33 @@
-import './Card.css';
-
-import { useNavigate } from 'react-router-dom';
+import './NftCard.css';
 
 interface CardProps {
+  identifier: string;
   collection: string;
   name: string;
   description: string;
-  banner_image_url: string;
+  image_url: string;
+  onClick?: (session: string) => void;
 }
 
-function Card({ collection, name, description, banner_image_url }: CardProps) {
-  const navigate = useNavigate();
-
+function Card({
+  identifier,
+  collection,
+  name,
+  description,
+  image_url,
+  onClick,
+}: CardProps) {
   const handleClick = () => {
-    navigate(`/collection/${collection}`);
+    if (!onClick) return;
+
+    onClick(identifier);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
-      navigate(`/collection/${collection}`);
+      if (!onClick) return;
+
+      onClick(identifier);
     }
   };
 
@@ -30,8 +39,9 @@ function Card({ collection, name, description, banner_image_url }: CardProps) {
       role="button"
       tabIndex={0}
     >
-      <img alt="collection-pic" src={banner_image_url || '/money.png'} />
+      <img alt="collection-pic" src={image_url || '/money.png'} />
       <div className="asset-card-name">{name}</div>
+      <div className="asset-card-collection">{collection}</div>
       <div className="asset-card-description">{description}</div>
     </div>
   );
