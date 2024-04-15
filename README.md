@@ -66,3 +66,8 @@ $ yarn run start:dev
 # production mode
 $ yarn run start:prod
 ```
+
+## Known Issues
+- The way the Open Sea API is designed is that Collections are the top level entity. The NFT endpoints are such that you must provide an account, contract, or collection to get a group of NFTs. For this reason the main dashboard displays Collections of NFTs. You can then click on a Collection to query for a group of NFTs.
+- Not all Collections have NFTs. Right now when you click on a Collection without NFTs you will just see a blank page.
+- My first inclination was to use the identifier as a unique identifier. It does not seem to be a reliable way to uniquely identify NFTs. I don't believe the names are either nor the identifiers and names together. Some work needs to be done there to figure out the best way to uniquely identify them. Given that we currently use identifier as our unique id the Cart if buggy if we add multiple items with the same identifier.
