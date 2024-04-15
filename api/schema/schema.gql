@@ -3,12 +3,16 @@
 # ------------------------------------------------------
 
 type Nft {
-  id: String!
   identifier: String!
   collection: String!
   name: String!
   description: String!
   image_url: String!
+}
+
+type Session {
+  id: String!
+  assets: [Nft!]
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -17,13 +21,6 @@ type Nft {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
-
-type Session {
-  id: String!
-  assets: [Nft!]
-  created_at: DateTime!
-  updated_at: DateTime!
-}
 
 type Asset {
   collection: String!

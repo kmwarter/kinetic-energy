@@ -6,7 +6,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { SessionsModule } from './sessions/sessions.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AssetsModule } from './assets/assets.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -14,18 +14,22 @@ import { ConfigModule } from '@nestjs/config';
       driver: ApolloDriver,
       autoSchemaFile: 'schema/schema.gql',
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'kmwarter',
-      password: 'helloworld',
-      database: 'kinetic',
-      autoLoadEntities: true,
-      synchronize: true, // Not to be used in prod
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get<string>('DB_HOST'),
+        port: configService.get<number>('DB_PORT'),
+        username: configService.get<string>('DB_USERNAME'),
+        password: configService.get<string>('DB_PASSWORD'),
+        database: configService.get<string>('DB_DATABASE'),
+        autoLoadEntities: true,
+        synchronize: true, // Not to be used in prod
+      }),
+      inject: [ConfigService],
     }),
     ConfigModule.forRoot({
-      isGlobal: true, // Make ConfigModule available globally
+      isGlobal: true,
     }),
     SessionsModule,
     AssetsModule,

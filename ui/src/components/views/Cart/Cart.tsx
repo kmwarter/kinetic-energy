@@ -14,7 +14,7 @@ interface CartProps {
 
 function Cart({ open, session, updateSession, removeSession, onCloseClick }: CartProps) {
   // TODO: take session and use it to submit the final order
-  // Upon submission we will call the removeSession function to delete this session and convert it to an order essentially
+  // Upon submission we will call the removeSession function to delete this session and convert it to an order
   
   const onRemoveClick = async (identifier: string) => {
     if (!session) return;

@@ -17,6 +17,7 @@
 }
 
 .remove-button {
+  font-weight: bold;
   display: flex;
   justify-content: flex-end;
 }

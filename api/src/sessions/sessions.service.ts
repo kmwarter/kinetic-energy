@@ -4,16 +4,12 @@ import { UpdateSessionInput } from './dto/update-session.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Session } from './entities/session.entity';
-// TODO: If going with the relation approach I will need extra logic for adding nfts to the Nft table
-// import { Nft } from '../assets/entities/nft.entity';
-// import { AssetsService } from '../assets/assets.service';
 
 @Injectable()
 export class SessionsService {
   constructor(
     @InjectRepository(Session)
     private sessionsRepository: Repository<Session>,
-    // private assetsService: AssetsService,
   ) {}
 
   create(createSessionInput: CreateSessionInput): Promise<Session> {
