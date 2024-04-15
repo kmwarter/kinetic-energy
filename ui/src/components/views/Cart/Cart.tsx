@@ -37,7 +37,7 @@ function Cart({ open, session, updateSession, removeSession, onCloseClick }: Car
       </div>
       <div className="card-container">
         {session?.assets?.map((asset) => {
-          return <NftCard key={asset.identifier} {...asset} onRemoveClick={onRemoveClick} />;
+          return <NftCard key={asset.name} {...asset} onRemoveClick={onRemoveClick} />;
         })}
       </div>
     </div>
