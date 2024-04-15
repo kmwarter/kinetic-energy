@@ -12,7 +12,7 @@ import NftCard from '../../shared/NftCard/NftCard';
 interface CellectionProps {
   session?: Session | null;
   createSession: () => Promise<Session>;
-  updateSession: (assetIds: string[]) => void;
+  updateSession: (id: string, assetIds: string[]) => void;
   openCart: () => void;
 }
 
@@ -40,13 +40,13 @@ function Collection({
 
   const onNftClick = async (identifier: string) => {
     try {
-      let sessionId = session?.id;
-      if (!sessionId) {
+      let currentSession = session;
+      if (!session?.id) {
         const newSession = await createSession();
-        sessionId = newSession.id;
+        currentSession = newSession;
       }
 
-      if (!session) {
+      if (!currentSession) {
         console.error(
           'There was an issue creating the session so that nft could be added to cart.',
         );
@@ -54,14 +54,15 @@ function Collection({
         return;
       }
 
-      if (session.assetIds.includes(identifier)) {
+      if (currentSession.assetIds.includes(identifier)) {
         // TODO: Make an app level error banner so the user can be notified of errors.
+        // Since Nfts are unique I assume you can not buy the same one twice?
 
         return;
       }
 
-      const newAssetIds = [...session.assetIds, identifier];
-      updateSession(newAssetIds);
+      const newAssetIds = [...currentSession.assetIds, identifier];
+      updateSession(currentSession.id, newAssetIds);
       openCart();
     } catch (error) {
       console.error('Error adding nft:', error);

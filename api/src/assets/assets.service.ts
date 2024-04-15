@@ -23,37 +23,37 @@ export class AssetsService {
   }
 
   async collections() {
-    return (
-      await axios.get(this.openSeaUrlV2('/collections'), this.axiosConfig)
-    ).data.collections;
+    // return (
+    //   await axios.get(this.openSeaUrlV2('/collections'), this.axiosConfig)
+    // ).data.collections;
     // test
-    // return [
-    //   {
-    //     collection: 'test-collection-slug',
-    //     name: 'Test Collection Title!',
-    //     description: 'Test collection description.',
-    //     banner_image_url: 'http://test-collection-banner-image-url.com/test',
-    //   },
-    // ];
+    return [
+      {
+        collection: 'test-collection-slug',
+        name: 'Test Collection Title!',
+        description: 'Test collection description.',
+        banner_image_url: 'http://test-collection-banner-image-url.com/test',
+      },
+    ];
   }
 
   async collection(collectionSlug: string) {
-    return (
-      await axios.get(
-        this.openSeaUrlV2(`/collection/${collectionSlug}/nfts`),
-        this.axiosConfig,
-      )
-    ).data.nfts;
+    // return (
+    //   await axios.get(
+    //     this.openSeaUrlV2(`/collection/${collectionSlug}/nfts`),
+    //     this.axiosConfig,
+    //   )
+    // ).data.nfts;
     // test
-    // return [
-    //   {
-    //     identifier: 'test-identifier',
-    //     collection: 'test-slug',
-    //     name: 'Test Asset Name',
-    //     description: 'Test asset description.',
-    //     image_url: 'http://test-asset-banner-image-url.com/test',
-    //   },
-    // ];
+    return [
+      {
+        identifier: 'test-identifier',
+        collection: 'test-slug',
+        name: 'Test Asset Name',
+        description: 'Test asset description.',
+        image_url: 'http://test-asset-banner-image-url.com/test',
+      },
+    ];
   }
 
   // async collection(identifiers: string[]) {

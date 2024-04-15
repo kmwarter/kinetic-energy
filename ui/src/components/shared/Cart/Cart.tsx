@@ -7,7 +7,7 @@ import { Session } from '../../../types';
 interface CartProps {
   open: boolean;
   session?: Session | null;
-  updateSession: (assetIds: string[]) => void;
+  updateSession: (id: string, assetIds: string[]) => void;
   removeSession: () => void;
   onCloseClick: () => void;
 }

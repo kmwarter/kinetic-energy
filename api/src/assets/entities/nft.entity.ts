@@ -16,4 +16,7 @@ export class Nft {
 
   @Field({ nullable: true })
   image_url: string;
+
+  @Field({ nullable: true })
+  sessionId: string;
 }

@@ -27,6 +27,7 @@ type Nft {
   name: String
   description: String
   image_url: String
+  sessionId: String
 }
 
 type Query {

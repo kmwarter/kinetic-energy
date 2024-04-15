@@ -37,6 +37,11 @@ function App() {
         },
       );
 
+      if (!session) {
+        sessionStorage.removeItem('kineticSessionId');
+        return { session: null };
+      }
+
       return { session };
     },
   });
@@ -102,11 +107,8 @@ function App() {
     return data.createSession;
   };
 
-  const updateSession = async (assetIds: string[]) => {
+  const updateSession = async (id: string, assetIds: string[]) => {
     try {
-      const id = data?.session?.id;
-      if (!id) return;
-
       await updateSessionMutationFn.mutateAsync({
         id,
         assetIds,
@@ -135,6 +137,8 @@ function App() {
     setCartOpen(true);
   };
 
+  // TODO: Remove log
+  console.log("SESSION", data);
   return (
     <div className="app">
       <BrowserRouter>
