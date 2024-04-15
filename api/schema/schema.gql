@@ -4,7 +4,7 @@
 
 type Session {
   id: String!
-  assetIds: [String!]
+  assetIds: [String!]!
   created_at: DateTime!
   updated_at: DateTime!
 }

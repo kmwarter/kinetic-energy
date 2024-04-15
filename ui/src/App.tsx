@@ -2,10 +2,11 @@ import './App.css';
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { request } from 'graphql-request';
+import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+import Cart from './components/shared/Cart/Cart';
 import Navbar from './components/shared/Navbar/Navbar';
-import Cart from './components/views/Cart/Cart';
 import Collection from './components/views/Collection/Collection';
 import Collections from './components/views/Collections/Collections';
 import {
@@ -17,6 +18,7 @@ import {
 import { CreateResponse, RemoveResponse, SessionData, UpdateResponse } from './types';
 
 function App() {
+  const [cartOpen, setCartOpen] = useState(false);
   const queryClient = useQueryClient();
   const { data } = useQuery<{
     session: SessionData['session'] | null;
@@ -47,6 +49,11 @@ function App() {
       );
 
       return data;
+    },
+    onSuccess: ({ createSession }) => {
+      sessionStorage.setItem('kineticSessionId', createSession.id);
+
+      queryClient.setQueryData(['session'], { session: createSession });
     },
   });
 
@@ -95,7 +102,7 @@ function App() {
     return data.createSession;
   };
 
-  const updateSession = async (id: string, assetIds: string[]) => {
+  const updateSession = async (assetIds: string[]) => {
     try {
       const id = data?.session?.id;
       if (!id) return;
@@ -120,10 +127,25 @@ function App() {
     }
   };
 
+  const toggleCart = () => {
+    setCartOpen((prevState) => !prevState);
+  };
+
+  const openCart = () => {
+    setCartOpen(true);
+  };
+
   return (
     <div className="app">
       <BrowserRouter>
-        <Navbar session={data?.session} />
+        <Cart
+          open={cartOpen}
+          session={data?.session}
+          updateSession={updateSession}
+          removeSession={removeSession}
+          onCloseClick={toggleCart}
+        />
+        <Navbar session={data?.session} onCartClick={toggleCart} />
         <Routes>
           <Route path="/" element={<Collections />} />
           <Route
@@ -133,16 +155,7 @@ function App() {
                 session={data?.session}
                 createSession={createSession}
                 updateSession={updateSession}
-              />
-            }
-          />
-          <Route
-            path="/cart"
-            element={
-              <Cart
-                session={data?.session}
-                updateSession={updateSession}
-                removeSession={removeSession}
+                openCart={openCart}
               />
             }
           />

@@ -1,29 +1,11 @@
 import './Collections.css';
 
 import { useQuery } from '@tanstack/react-query';
-import { gql, request } from 'graphql-request';
+import { request } from 'graphql-request';
 
+import { assetsQuery } from '../../../gql';
+import { AssetsData } from '../../../types';
 import CollectionCard from './CollectionCard/CollectionCard';
-
-interface AssetsData {
-  assets: {
-    collection: string;
-    name: string;
-    description: string;
-    banner_image_url: string;
-  }[];
-}
-
-const assetsQuery = gql`
-  query GetAssets {
-    assets {
-      collection
-      name
-      description
-      banner_image_url
-    }
-  }
-`;
 
 function Collections() {
   const { isPending, isError, data, error } = useQuery<{

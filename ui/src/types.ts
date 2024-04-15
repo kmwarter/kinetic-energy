@@ -20,3 +20,22 @@ export interface UpdateResponse {
 export interface RemoveResponse {
   removeSession: SessionData['session'];
 }
+
+export interface AssetsData {
+  assets: {
+    collection: string;
+    name: string;
+    description: string;
+    banner_image_url: string;
+  }[];
+}
+
+export interface NftsData {
+  nfts: {
+    identifier: string;
+    collection: string;
+    name: string;
+    description: string;
+    image_url: string;
+  }[];
+}

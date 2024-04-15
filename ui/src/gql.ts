@@ -43,3 +43,26 @@ export const removeSessionMutation = gql`
     }
   }
 `;
+
+export const assetsQuery = gql`
+  query GetAssets {
+    assets {
+      collection
+      name
+      description
+      banner_image_url
+    }
+  }
+`;
+
+export const nftsQuery = gql`
+  query GetNfts($slug: String!) {
+    nfts(collection_slug: $slug) {
+      identifier
+      collection
+      name
+      description
+      image_url
+    }
+  }
+`;

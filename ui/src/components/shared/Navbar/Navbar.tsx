@@ -6,16 +6,31 @@ import { Session } from '../../../types';
 
 interface NavbarProps {
   session?: Session | null;
+  onCartClick: () => void;
 }
 
-function Navbar({ session }: NavbarProps) {
+function Navbar({ session, onCartClick }: NavbarProps) {
   return (
     <div className="nav">
-      <div className="cart-icon-container">
-        <div className="item-number">{session?.assetIds.length}</div>
-        <Link to="/cart">
+      <Link to="/" className="nav-home">
+        Collections
+      </Link>
+      <div className="nav-right">
+        <div
+          onClick={onCartClick}
+          className="cart-icon-container"
+          onKeyDown={onCartClick}
+          role="button"
+          tabIndex={0}
+        >
+          <div
+            className="item-number"
+            style={{ display: session?.assetIds.length ? 'flex' : 'none' }}
+          >
+            {session?.assetIds.length}
+          </div>
           <img className="cart-icon" alt="cart-icon" src="/cart-icon.png" />
-        </Link>
+        </div>
       </div>
     </div>
   );

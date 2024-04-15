@@ -19,4 +19,11 @@ export class AssetsResolver {
   ) {
     return this.assetsService.collection(collection_slug);
   }
+
+  // @Query(() => [Nft], { name: 'nftsByIdentifiers' })
+  // findNftsByIdentifiers(
+  //   @Args('identifiers', { type: () => String[] }) identifiers: string[],
+  // ) {
+  //   return this.assetsService.nfts(identifiers);
+  // }
 }

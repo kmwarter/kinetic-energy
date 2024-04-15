@@ -1,41 +1,27 @@
 import './Collection.css';
 
 import { useQuery } from '@tanstack/react-query';
-import { gql, request } from 'graphql-request';
+import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 
+import { nftsQuery } from '../../../gql';
 import { Session } from '../../../types';
+import { NftsData } from '../../../types';
 import NftCard from '../../shared/NftCard/NftCard';
-
-interface NftsData {
-  nfts: {
-    identifier: string;
-    collection: string;
-    name: string;
-    description: string;
-    image_url: string;
-  }[];
-}
-
-const nftsQuery = gql`
-  query GetNfts($slug: String!) {
-    nfts(collection_slug: $slug) {
-      identifier
-      collection
-      name
-      description
-      image_url
-    }
-  }
-`;
 
 interface CellectionProps {
   session?: Session | null;
   createSession: () => Promise<Session>;
-  updateSession: (id: string, assetIds: string[]) => void;
+  updateSession: (assetIds: string[]) => void;
+  openCart: () => void;
 }
 
-function Collection({ session, createSession, updateSession }: CellectionProps) {
+function Collection({
+  session,
+  createSession,
+  updateSession,
+  openCart,
+}: CellectionProps) {
   const { slug } = useParams();
   const { isPending, isError, data, error } = useQuery<{
     nfts: NftsData['nfts'] | null;
@@ -53,13 +39,33 @@ function Collection({ session, createSession, updateSession }: CellectionProps) 
   });
 
   const onNftClick = async (identifier: string) => {
-    let sessionId = session?.id;
-    if (!sessionId) {
-      const newSession = await createSession();
-      sessionId = newSession.id;
-    }
+    try {
+      let sessionId = session?.id;
+      if (!sessionId) {
+        const newSession = await createSession();
+        sessionId = newSession.id;
+      }
 
-    // TODO: Implement add to cart through update session
+      if (!session) {
+        console.error(
+          'There was an issue creating the session so that nft could be added to cart.',
+        );
+
+        return;
+      }
+
+      if (session.assetIds.includes(identifier)) {
+        // TODO: Make an app level error banner so the user can be notified of errors.
+
+        return;
+      }
+
+      const newAssetIds = [...session.assetIds, identifier];
+      updateSession(newAssetIds);
+      openCart();
+    } catch (error) {
+      console.error('Error adding nft:', error);
+    }
   };
 
   if (isPending) {

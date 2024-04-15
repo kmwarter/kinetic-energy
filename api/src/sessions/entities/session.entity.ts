@@ -14,9 +14,9 @@ export class Session {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(() => [String], { nullable: true })
-  @Column('simple-array', { nullable: true })
-  assetIds: string[] | null;
+  @Field(() => [String])
+  @Column('simple-array')
+  assetIds: string[] = [];
 
   @Field()
   @Column()
