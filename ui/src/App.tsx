@@ -144,8 +144,6 @@ function App() {
     setCartOpen(true);
   };
 
-  // TODO: Remove log
-  console.log('SESSION', data);
   return (
     <div className="app">
       <BrowserRouter>
