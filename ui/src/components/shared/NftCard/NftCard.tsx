@@ -9,15 +9,17 @@ interface CardProps {
   description: string;
   image_url: string;
   onClick?: (nft: Nft) => void;
+  onRemoveClick?: (identifier: string) => void;
 }
 
-function Card({
+function NftCard({
   identifier,
   collection,
   name,
   description,
   image_url,
   onClick,
+  onRemoveClick,
 }: CardProps) {
   const handleClick = () => {
     if (!onClick) return;
@@ -33,6 +35,12 @@ function Card({
     }
   };
 
+  const onRemoveButtonClick = () => {
+    if (!onRemoveClick) return;
+
+    onRemoveClick(identifier);
+  }
+
   return (
     <div
       onClick={handleClick}
@@ -41,6 +49,7 @@ function Card({
       role="button"
       tabIndex={0}
     >
+      {onRemoveClick && <div onClick={onRemoveButtonClick} className="remove-button">X</div>}
       <img alt="collection-pic" src={image_url || '/money.png'} />
       <div className="asset-card-name">{name}</div>
       <div className="asset-card-collection">{collection}</div>
@@ -49,4 +58,4 @@ function Card({
   );
 }
 
-export default Card;
+export default NftCard;

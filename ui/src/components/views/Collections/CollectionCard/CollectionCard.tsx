@@ -9,7 +9,7 @@ interface CardProps {
   banner_image_url: string;
 }
 
-function Card({ collection, name, description, banner_image_url }: CardProps) {
+function CollectionCard({ collection, name, description, banner_image_url }: CardProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -37,4 +37,4 @@ function Card({ collection, name, description, banner_image_url }: CardProps) {
   );
 }
 
-export default Card;
+export default CollectionCard;

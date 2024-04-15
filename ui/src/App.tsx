@@ -119,6 +119,7 @@ function App() {
         id,
         assets,
       });
+
     } catch (error) {
       console.error('Error updating session:', error);
     }

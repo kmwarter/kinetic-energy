@@ -8,10 +8,18 @@
   border: 1px solid #000;
   z-index: 999;
   padding: 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .close-button {
   font-weight: bold;
   font-size: 24px;
   cursor: pointer;
+}
+
+.card-container {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
 }

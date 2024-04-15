@@ -1,8 +1,8 @@
 import './Cart.css';
 
-// import { nftsByIdentifiersQuery } from '../../../gql';
 import { Session } from '../../../types';
 import { Nft } from '../../../types';
+import NftCard from '../../shared/NftCard/NftCard';
 
 interface CartProps {
   open: boolean;
@@ -13,26 +13,16 @@ interface CartProps {
 }
 
 function Cart({ open, session, updateSession, removeSession, onCloseClick }: CartProps) {
-  // use product ids in session to fetch all of the nft data
-  // TODO: This is too inefficient to keep querying this so look into holding all nft data instead of just ids on session via a cart table
   // TODO: take session and use it to submit the final order
-  // Also allow remove from cart through update cart
-  // const { isPending, isError, data, error } = useQuery<{
-  //   nfts: NftsData['nfts'] | null;
-  // }>({
-  //   queryKey: ['nfts'],
-  //   queryFn: async () => {
-  //     if (!session) return;
+  // Upon submission we will call the removeSession function to delete this session and convert it to an order essentially
+  
+  const onRemoveClick = async (identifier: string) => {
+    if (!session) return;
 
-  //     const { nfts }: { nfts: NftsData['nfts'] } = await request(
-  //       'http://localhost:4000/graphql',
-  //       nftsByIdentifiersQuery,
-  //       { identifiers: session.assetIds },
-  //     );
+    const newAssets = [...(session?.assets ? session.assets : [])].filter((asset) => asset.identifier !== identifier);
 
-  //     return { nfts };
-  //   },
-  // });
+    updateSession(session.id, newAssets);
+  }
 
   return (
     <div className="cart" style={{ display: open ? 'flex' : 'none' }}>
@@ -44,6 +34,11 @@ function Cart({ open, session, updateSession, removeSession, onCloseClick }: Car
         tabIndex={0}
       >
         X
+      </div>
+      <div className="card-container">
+        {session?.assets?.map((asset) => {
+          return <NftCard key={asset.identifier} {...asset} onRemoveClick={onRemoveClick} />;
+        })}
       </div>
     </div>
   );
