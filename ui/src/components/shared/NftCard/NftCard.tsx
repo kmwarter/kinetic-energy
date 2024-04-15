@@ -44,16 +44,16 @@ function NftCard({
   return (
     <div
       onClick={handleClick}
-      className="asset-card"
+      className="nft-card"
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
       {onRemoveClick && <div onClick={onRemoveButtonClick} className="remove-button">X</div>}
-      <img alt="collection-pic" src={image_url || '/money.png'} />
-      <div className="asset-card-name">{name}</div>
-      <div className="asset-card-collection">{collection}</div>
-      <div className="asset-card-description">{description}</div>
+      <img className="nft-card-image" alt="collection-pic" src={image_url || '/money.png'} />
+      <div className="nft-card-name">{name}</div>
+      <div className="nft-card-collection">{collection}</div>
+      <div className="nft-card-description">{description}</div>
     </div>
   );
 }

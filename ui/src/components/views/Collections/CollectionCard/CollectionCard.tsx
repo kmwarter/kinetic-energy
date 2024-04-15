@@ -25,14 +25,14 @@ function CollectionCard({ collection, name, description, banner_image_url }: Car
   return (
     <div
       onClick={handleClick}
-      className="asset-card"
+      className="collection-card"
       onKeyDown={handleKeyDown}
       role="button"
       tabIndex={0}
     >
       <img alt="collection-pic" src={banner_image_url || '/money.png'} />
-      <div className="asset-card-name">{name}</div>
-      <div className="asset-card-description">{description}</div>
+      <div className="collection-card-name">{name}</div>
+      <div className="collection-card-description">{description}</div>
     </div>
   );
 }

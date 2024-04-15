@@ -59,13 +59,6 @@ function Collection({
         return;
       }
 
-      if (currentSession.assets?.some((nft) => nft.identifier === identifier)) {
-        // TODO: Make an app level error banner so the user can be notified of errors.
-        // Since Nfts are unique I assume you can not buy the same one twice?
-
-        return;
-      }
-
       const newAssets = [
         ...(currentSession.assets ? currentSession.assets : []),
         {
@@ -94,7 +87,7 @@ function Collection({
   return (
     <div className="collections-container">
       {data?.nfts?.map((nft) => {
-        return <NftCard key={nft.collection} {...nft} onClick={onNftClick} />;
+        return <NftCard key={nft.name} {...nft} onClick={onNftClick} />;
       })}
     </div>
   );

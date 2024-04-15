@@ -1,4 +1,4 @@
-.asset-card {
+.collection-card {
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -10,13 +10,13 @@
   min-height: 400px;
 }
 
-.asset-card:hover {
+.collection-card:hover {
     cursor: pointer;
     border: 1px solid #000;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
-.asset-card-name {
+.collection-card-name {
   margin-top: 16px;
   font-size: 24px;
 }
