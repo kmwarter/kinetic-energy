@@ -1,11 +1,12 @@
 import {
   Entity,
-  Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { ObjectType, Field } from '@nestjs/graphql';
+import { Nft } from '../../assets/entities/nft.entity';
 
 @Entity()
 @ObjectType()
@@ -14,17 +15,15 @@ export class Session {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(() => [String])
-  @Column('simple-array')
-  assetIds: string[] = [];
+  @Field(() => [Nft], { nullable: true })
+  @OneToMany(() => Nft, (nft) => nft.session)
+  assets: Nft[];
 
   @Field()
-  @Column()
   @CreateDateColumn()
   created_at: Date;
 
   @Field()
-  @Column()
   @UpdateDateColumn()
   updated_at: Date;
 }

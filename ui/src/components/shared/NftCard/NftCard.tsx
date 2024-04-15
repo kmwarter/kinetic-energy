@@ -1,12 +1,14 @@
 import './NftCard.css';
 
+import { Nft } from '../../../types';
+
 interface CardProps {
   identifier: string;
   collection: string;
   name: string;
   description: string;
   image_url: string;
-  onClick?: (session: string) => void;
+  onClick?: (nft: Nft) => void;
 }
 
 function Card({
@@ -20,14 +22,14 @@ function Card({
   const handleClick = () => {
     if (!onClick) return;
 
-    onClick(identifier);
+    onClick({ identifier, collection, name, description, image_url });
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
       if (!onClick) return;
 
-      onClick(identifier);
+      onClick({ identifier, collection, name, description, image_url });
     }
   };
 

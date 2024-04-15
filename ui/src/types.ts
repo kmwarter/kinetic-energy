@@ -1,6 +1,6 @@
 export interface Session {
   id: string;
-  assetIds: string[];
+  assets: Nft[] | null;
   created_at: string;
   updated_at: string;
 }
@@ -30,12 +30,14 @@ export interface AssetsData {
   }[];
 }
 
+export interface Nft {
+  identifier: string;
+  collection: string;
+  name: string;
+  description: string;
+  image_url: string;
+}
+
 export interface NftsData {
-  nfts: {
-    identifier: string;
-    collection: string;
-    name: string;
-    description: string;
-    image_url: string;
-  }[];
+  nfts: Nft[];
 }

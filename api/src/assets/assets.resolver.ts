@@ -1,10 +1,10 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { AssetsService } from './assets.service';
 import { Asset } from './entities/asset.entity';
-import { Nft } from './entities/nft.entity';
+import { CollectionNft } from './entities/collectionnft.entity';
 
 @Resolver(() => Asset)
-@Resolver(() => Nft)
+@Resolver(() => CollectionNft)
 export class AssetsResolver {
   constructor(private readonly assetsService: AssetsService) {}
 
@@ -13,7 +13,7 @@ export class AssetsResolver {
     return this.assetsService.collections();
   }
 
-  @Query(() => [Nft], { name: 'nfts' })
+  @Query(() => [CollectionNft], { name: 'nfts' })
   findNfts(
     @Args('collection_slug', { type: () => String }) collection_slug: string,
   ) {

@@ -2,12 +2,12 @@ import './Cart.css';
 
 // import { nftsByIdentifiersQuery } from '../../../gql';
 import { Session } from '../../../types';
-// import { NftsData } from '../../../types';
+import { Nft } from '../../../types';
 
 interface CartProps {
   open: boolean;
   session?: Session | null;
-  updateSession: (id: string, assetIds: string[]) => void;
+  updateSession: (id: string, assets: Nft[]) => void;
   removeSession: () => void;
   onCloseClick: () => void;
 }

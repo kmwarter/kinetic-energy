@@ -25,9 +25,9 @@ function Navbar({ session, onCartClick }: NavbarProps) {
         >
           <div
             className="item-number"
-            style={{ display: session?.assetIds.length ? 'flex' : 'none' }}
+            style={{ display: session?.assets?.length ? 'flex' : 'none' }}
           >
-            {session?.assetIds.length}
+            {session?.assets?.length}
           </div>
           <img className="cart-icon" alt="cart-icon" src="/cart-icon.png" />
         </div>

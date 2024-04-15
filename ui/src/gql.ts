@@ -4,7 +4,13 @@ export const sessionQuery = gql`
   query GetSession($id: String!) {
     session(id: $id) {
       id
-      assetIds
+      assets {
+        identifier
+        collection
+        name
+        description
+        image_url
+      }
       created_at
       updated_at
     }
@@ -15,7 +21,13 @@ export const createSessionMutation = gql`
   mutation {
     createSession {
       id
-      assetIds
+      assets {
+        identifier
+        collection
+        name
+        description
+        image_url
+      }
       created_at
       updated_at
     }
@@ -23,10 +35,16 @@ export const createSessionMutation = gql`
 `;
 
 export const updateSessionMutation = gql`
-  mutation UpdateSession($id: String!, $assetIds: [String!]!) {
-    updateSession(updateSessionInput: { id: $id, assetIds: $assetIds }) {
+  mutation UpdateSession($id: String!, $assets: [CreateNftInput!]!) {
+    updateSession(updateSessionInput: { id: $id, assets: $assets }) {
       id
-      assetIds
+      assets {
+        identifier
+        collection
+        name
+        description
+        image_url
+      }
       created_at
       updated_at
     }
@@ -37,7 +55,13 @@ export const removeSessionMutation = gql`
   mutation RemoveSession($id: String!) {
     removeSession(id: $id) {
       id
-      assetIds
+      assets {
+        identifier
+        collection
+        name
+        description
+        image_url
+      }
       created_at
       updated_at
     }

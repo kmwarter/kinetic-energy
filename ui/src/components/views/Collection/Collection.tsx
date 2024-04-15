@@ -5,14 +5,13 @@ import { request } from 'graphql-request';
 import { useParams } from 'react-router-dom';
 
 import { nftsQuery } from '../../../gql';
-import { Session } from '../../../types';
-import { NftsData } from '../../../types';
+import { Nft, NftsData, Session } from '../../../types';
 import NftCard from '../../shared/NftCard/NftCard';
 
 interface CellectionProps {
   session?: Session | null;
   createSession: () => Promise<Session>;
-  updateSession: (id: string, assetIds: string[]) => void;
+  updateSession: (id: string, assets: Nft[]) => void;
   openCart: () => void;
 }
 
@@ -38,7 +37,13 @@ function Collection({
     },
   });
 
-  const onNftClick = async (identifier: string) => {
+  const onNftClick = async ({
+    identifier,
+    collection,
+    name,
+    description,
+    image_url,
+  }: Nft) => {
     try {
       let currentSession = session;
       if (!session?.id) {
@@ -54,15 +59,24 @@ function Collection({
         return;
       }
 
-      if (currentSession.assetIds.includes(identifier)) {
+      if (currentSession.assets?.some((nft) => nft.identifier === identifier)) {
         // TODO: Make an app level error banner so the user can be notified of errors.
         // Since Nfts are unique I assume you can not buy the same one twice?
 
         return;
       }
 
-      const newAssetIds = [...currentSession.assetIds, identifier];
-      updateSession(currentSession.id, newAssetIds);
+      const newAssets = [
+        ...(currentSession.assets ? currentSession.assets : []),
+        {
+          identifier,
+          collection,
+          name,
+          description,
+          image_url,
+        },
+      ];
+      updateSession(currentSession.id, newAssets);
       openCart();
     } catch (error) {
       console.error('Error adding nft:', error);

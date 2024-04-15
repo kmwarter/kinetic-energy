@@ -2,9 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Session {
+type Nft {
   id: String!
-  assetIds: [String!]!
+  identifier: String!
+  collection: String!
+  name: String!
+  description: String!
+  image_url: String!
   created_at: DateTime!
   updated_at: DateTime!
 }
@@ -14,6 +18,13 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Session {
+  id: String!
+  assets: [Nft!]
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
 type Asset {
   collection: String!
   name: String
@@ -21,20 +32,19 @@ type Asset {
   banner_image_url: String
 }
 
-type Nft {
+type CollectionNft {
   identifier: String!
   collection: String!
   name: String
   description: String
   image_url: String
-  sessionId: String
 }
 
 type Query {
   sessions: [Session!]!
   session(id: String!): Session
   assets: [Asset!]!
-  nfts(collection_slug: String!): [Nft!]!
+  nfts(collection_slug: String!): [CollectionNft!]!
 }
 
 type Mutation {
@@ -49,5 +59,13 @@ input CreateSessionInput {
 
 input UpdateSessionInput {
   id: String!
-  assetIds: [String!]!
+  assets: [CreateNftInput!]!
+}
+
+input CreateNftInput {
+  identifier: String!
+  collection: String!
+  name: String!
+  description: String!
+  image_url: String!
 }
